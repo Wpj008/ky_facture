@@ -2,7 +2,7 @@
 vendor/
 
 # CSS personnel
-assets/css/style.css
+assets/
 
 # VS Code
 .vscode/
@@ -11,4 +11,4 @@ assets/css/style.css
 *.log
 
 # Fichiers bdd
-.sql
+sql/
