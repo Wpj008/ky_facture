@@ -1,0 +1,14 @@
+# Composer
+vendor/
+
+# CSS personnel
+assets/css/style.css
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Fichiers bdd
+.sql
