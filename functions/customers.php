@@ -1,5 +1,6 @@
 <?php
 require_once "../functions/database.php";
+require_once "../functions/logs.php";
 
 
 function InsertCustomer($type, $lastname, $firstname, $entreprise, $adresse, $ville, $code_postal, $phone, $email){
@@ -18,6 +19,12 @@ function InsertCustomer($type, $lastname, $firstname, $entreprise, $adresse, $vi
     $queryInsert->bindParam(":email", $email);
 
     $result = $queryInsert->execute();
+
+    InsertHistorique(
+    $_SESSION['user_id'],
+    "CREATE",
+    $_SESSION['first_name']." ".$_SESSION['last_name'] ." a créé le client «". $firstname ." ". $lastname ."»."
+    );
 
     header("Location: /facturation/pages/dashboard.php");
     exit();
