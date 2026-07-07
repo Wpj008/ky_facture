@@ -26,16 +26,48 @@ $statuts = getAllStatusDevis();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nouveau Devis — Factura</title>
+  <title>Nouveau Devis — KY-Facture</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/create.css" rel="stylesheet">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="../assets/favicon/site.webmanifest">
 </head>
 <body>
+
+<style>
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200 !important;
+  background: var(--color-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-base) var(--ease-standard), visibility var(--duration-base);
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-width);
+  z-index:1300 !important;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-top-right-radius: var(--radius-xl);
+  border-bottom-right-radius: var(--radius-xl);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+</style>
+
+
 <div class="app-shell">
 
 <?php require_once "../partials/sidebar.php" ?>
@@ -48,7 +80,7 @@ $statuts = getAllStatusDevis();
     </button>
 
     <div class="navbar-app__title">
-        <h1>Nouvelle Devis</h1>
+        <h1>Nouveau Devis</h1>
         <small>Brouillon</small>
     </div>
 
@@ -77,15 +109,12 @@ $statuts = getAllStatusDevis();
 
 <div class="row">
 
-<form id="formFacture" action="../traitements/traitement_devis.php" method="POST" data-line-items>
+
 
 <div class="col-md-6 form-group">
 <label class="form-label">Client <span class="req">*</span></label>
 
-<select
-class="form-select-ds"
-name="customer_id"
-required>
+<select class="form-select-ds" name="customer_id" required>
 
 <option value="">Sélectionner...</option>
 
@@ -125,7 +154,7 @@ required>
 
 <label class="form-label">Statut</label>
 
-<select class="form-select-ds" name="status_devis_id">
+<select class="form-select-ds" name="status_devis_id" required>
 
 <option value="">Sélectionner...</option>
 
@@ -148,10 +177,7 @@ required>
 
 <h3 style="font-size:var(--fs-h4)">Lignes</h3>
 
-<button
-type="button"
-class="btn btn-secondary btn-sm"
-data-add-line>
+<button type="button" class="btn btn-secondary btn-sm" data-add-line>
 
 <i class="bi bi-plus-lg"></i>
 
@@ -185,7 +211,7 @@ Ajouter une ligne
 
 <tr data-line>
 
-<td>
+<td class="service-cell">
 
 
 <select class="form-select-ds" name="service_id[]" data-service-select required>
