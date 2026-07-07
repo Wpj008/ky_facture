@@ -31,6 +31,62 @@ require_once "../functions/devis.php";
     <link rel="manifest" href="../assets/favicon/site.webmanifest">
 </head>
 <body>
+
+<style>
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200 !important;
+  background: var(--color-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-base) var(--ease-standard), visibility var(--duration-base);
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-width);
+  z-index:1300 !important;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-top-right-radius: var(--radius-xl);
+  border-bottom-right-radius: var(--radius-xl);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+
+.cell-actions {
+    display: flex;
+    justify-content: center; /* centre les icônes */
+    align-items: center;
+    gap: 8px; /* espace entre les icônes */
+}
+
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.garbage{
+    color: red;
+}
+
+.pencil{
+    color: #00ACFE;
+}
+
+.eye{
+
+    color: #00bd1f;
+}
+</style>
 <div class="app-shell">
 
     <?php require_once "../partials/sidebar.php" ?>
@@ -79,7 +135,20 @@ require_once "../functions/devis.php";
                 <td class="cell-muted"><?= $dev['date_creation_devis'] ?></td>
                 <td class="text-mono"><?= $dev['total_ttc'] ?> €</td>
                 <td><span class="badge-ds badge-devis-<?= $dev['id_status_devis']; ?>"> <?= $dev['name_status_devis']; ?></span></td>
-                <td class="cell-actions"><a class="icon-button btn-lm" href="detail_devis.php?id=<?= $dev['id_devis']; ?>"><i class="bi bi-eye"></i></a></td>
+                <td class="cell-actions">
+                    <a class="icon-button btn-lm" href="detail_devis.php?id=<?= $dev['id_devis']; ?>">
+                        <i class="eye bi bi-eye"></i>
+                    </a>
+
+                    <a class="icon-button btn-lm" href="update_devis.php?id=<?= $dev['id_devis']; ?>">
+                    <i class="pencil bi bi-pencil"></i>
+                    </a>
+
+                    <a class="icon-button btn-lm" href="delete_devis.php?id=<?= $dev['id_devis']; ?>">
+                    <i class="garbage bi bi-trash3"></i>
+                    </a>
+                </td>
+            </tr>
                 <?php endforeach ?>
           </tbody>
    
