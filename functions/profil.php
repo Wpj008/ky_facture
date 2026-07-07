@@ -1,5 +1,6 @@
 <?php
 require_once "../functions/database.php";
+require_once "../functions/logs.php";
 
 
 
@@ -33,7 +34,15 @@ function selectUser($id_user){// function pour selectionner les données d'un ut
     $query->bindParam(":email",$email);
     $query->bindParam(":id",$id);
 
-    return $query->execute();
+     $query->execute();
+        
+    InsertHistorique(
+        $_SESSION['user_id'],
+        "UPDATE",
+        $_SESSION['first_name']." ".$_SESSION['last_name'] ." a modifié des informations de son profil."
+    );
+
+   
 
 }
 
@@ -47,6 +56,13 @@ function UpdatePassword($id,$password){
 
     $query->bindParam(":id",$id);
 
-    return $query->execute();
+     $query->execute();
+
+     InsertHistorique(
+        $_SESSION['user_id'],
+        "UPDATE",
+        $_SESSION['first_name']." ".$_SESSION['last_name'] ." a modifié son mot de passe."
+    );
+
 
 }
