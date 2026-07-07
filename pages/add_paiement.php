@@ -40,6 +40,36 @@ $facture = getFactureById($facture_id);
 
 <body>
 
+<style>
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200 !important;
+  background: var(--color-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-base) var(--ease-standard), visibility var(--duration-base);
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-width);
+  z-index:1300 !important;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-top-right-radius: var(--radius-xl);
+  border-bottom-right-radius: var(--radius-xl);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+</style>
+
+
 <div class="app-shell">
 
     <?php require_once "../partials/sidebar.php"; ?>
@@ -166,6 +196,7 @@ $facture = getFactureById($facture_id);
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap"></script>
+<script src="../assets/js/app.js"></script>
 
 </body>
 
