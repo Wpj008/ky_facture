@@ -28,16 +28,47 @@ $statuts = getAllStatusFacture();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nouvelle facture — Factura</title>
+  <title>Nouvelle facture — KY-Facture</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/create.css" rel="stylesheet">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="../assets/favicon/site.webmanifest">
 </head>
 <body>
+
+<style>
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200 !important;
+  background: var(--color-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-base) var(--ease-standard), visibility var(--duration-base);
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-width);
+  z-index:1300 !important;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-top-right-radius: var(--radius-xl);
+  border-bottom-right-radius: var(--radius-xl);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+</style>
+
 <div class="app-shell">
 
 <?php require_once "../partials/sidebar.php" ?>
