@@ -1,5 +1,6 @@
 <?php
 require_once "../functions/database.php";
+require_once "../functions/logs.php";
 
 
 function InsertFacture($numero_facture, $customer_id, $date_creation, $date_echeance, $status, $total_ht, $total_tva, $total_ttc, $created_by, $service, $quantite, $prix, $tva, $montant_ht, $montant_ttc){
@@ -14,13 +15,13 @@ function InsertFacture($numero_facture, $customer_id, $date_creation, $date_eche
 
         $queryInsert->bindParam(":numero", $numero_facture);
         $queryInsert->bindParam(":customer", $customer_id);
-        $queryInsert->bindParam("date_cretaion", $date_creation);
-        $queryInsert->bindParam("date_echeance",$date_echeance,);
-        $queryInsert->bindParam("status",$status,);
-        $queryInsert->bindParam("ht",$total_ht,);
-        $queryInsert->bindParam("tva",$total_tva,);
-        $queryInsert->bindParam("ttc",$total_ttc,);
-        $queryInsert->bindParam("created_by",$created_by);
+        $queryInsert->bindParam("d:ate_cretaion", $date_creation);
+        $queryInsert->bindParam(":date_echeance",$date_echeance,);
+        $queryInsert->bindParam(":status",$status,);
+        $queryInsert->bindParam(":ht",$total_ht,);
+        $queryInsert->bindParam(":tva",$total_tva,);
+        $queryInsert->bindParam(":ttc",$total_ttc,);
+        $queryInsert->bindParam(":created_by",$created_by);
        
 
         $queryInsert->execute();
@@ -31,7 +32,7 @@ function InsertFacture($numero_facture, $customer_id, $date_creation, $date_eche
 
         foreach($service as $i=>$srv){
 
-            if(trim($srv)==""){
+            if($srv==""){
                 continue;
             }
 
@@ -51,8 +52,15 @@ function InsertFacture($numero_facture, $customer_id, $date_creation, $date_eche
 
         $pdo->commit();
 
-        header("Location: ../pages/facture.php");
-        exit;
+        InsertHistorique(
+            $_SESSION['user_id'],
+            "CREATE",
+            $_SESSION['first_name']." ".$_SESSION['last_name'] ." a créé la facture n°$numero_facture pour le client Ref : « $customer_id » d'un montant global de ".number_format($montant_ttc,2,","," ")." €."
+        );
+
+       header("Location: ../pages/facture.php");
+      
+        exit();
 
     }
 
@@ -72,6 +80,18 @@ function getAllFactures(){
 
     try{
         $querySelect = getPDO()->prepare("SELECT * FROM factures INNER JOIN customers ON factures.customer_id = customers.id_customer INNER JOIN status_facture ON factures.status_facture_id = status_facture.id_status_facture");
+        $querySelect->execute();
+        $result = $querySelect->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }catch(PDOException $e){
+        echo "Erreur lors de la récupération des factures : " . $e->getMessage();
+    }
+}
+
+function getAllFacturesDashboard(){
+
+    try{
+        $querySelect = getPDO()->prepare("SELECT * FROM factures INNER JOIN customers ON factures.customer_id = customers.id_customer INNER JOIN status_facture ON factures.status_facture_id = status_facture.id_status_facture  ORDER BY id_facture DESC  LIMIT 5");
         $querySelect->execute();
         $result = $querySelect->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -147,6 +167,104 @@ function getFacturesByUser($userId){
     }catch(PDOException $e){
         echo "Erreur lors de la récupération des factures du client : " . $e->getMessage();
     }
+}
+
+
+
+function updateFacture($id_facture, $id_ligne, $customer_id,$date_echeance,$status,$total_ht,$total_tva,$total_ttc, $quantite, $montant_ht, $montant_ttc, $numero_facture){
+
+    try{
+
+        $pdo = getPDO();
+
+        $pdo->beginTransaction();
+
+        // Mise à jour de la facture
+        $queryFacture = $pdo->prepare("UPDATE factures SET customer_id = :customer, date_echeance_facture = :date_echeance, status_facture_id = :status, total_ht = :ht, total_tva = :tva, total_ttc = :ttc, updated_at_facture = NOW() WHERE id_facture = :id");
+
+
+
+        $queryFacture->bindParam(":id", $id_facture);
+        $queryFacture->bindParam(":customer", $customer_id);
+        $queryFacture->bindParam(":date_echeance",$date_echeance,);
+        $queryFacture->bindParam(":status",$status,);
+        $queryFacture->bindParam(":ht",$total_ht,);
+        $queryFacture->bindParam(":tva",$total_tva,);
+        $queryFacture->bindParam(":ttc",$total_ttc,);
+ 
+
+
+        $queryFacture->execute();
+
+        // Mise à jour des lignes
+        $queryLine = $pdo->prepare(" UPDATE ligne_facture SET quantite_facture = :quantite, montant_ht = :ht, montant_ttc = :ttc, updated_at_ligneFacture = NOW() WHERE id_ligne_facture = :id_ligne");
+
+        foreach($id_ligne as $i => $ligne){
+
+            $queryLine->execute([
+
+                
+                "quantite" => $quantite[$i],
+                "ht"       => $montant_ht[$i],
+                "ttc"      => $montant_ttc[$i],
+                "id_ligne" => $ligne
+
+            ]);
+
+        }
+
+        $pdo->commit();
+
+        InsertHistorique(
+            $_SESSION['user_id'],
+            "UPDATE",
+            $_SESSION['first_name']." ".$_SESSION['last_name'] ." a modifié la facture n° $numero_facture."
+        );
+
+       header("Location: ../pages/facture.php");
+        exit;
+
+    }
+
+    catch(PDOException $e){
+
+        $pdo->rollBack();
+
+        die($e->getMessage());
+
+    }
+
+}
+
+
+function deleteFacture($id_facture){
+
+
+    try{
+
+        $queryDelete = getPDO()->prepare("DELETE FROM factures WHERE id_facture = :id");
+
+        $queryDelete->bindParam(":id", $id_facture);
+
+        
+        InsertHistorique(
+            $_SESSION['user_id'],
+            "DELETE_FACTURE",
+            $_SESSION['first_name']." ".$_SESSION['last_name'] ." a supprimé la facture Ref : $id_facture."
+        );
+
+        $queryDelete->execute();
+
+        header("Location: ../pages/facture.php");
+        exit();
+
+
+     }catch(PDOException $e){
+        echo "Erreur lors de la suppression de la facture : " . $e->getMessage();
+    }
+
+
+
 }
 
 
