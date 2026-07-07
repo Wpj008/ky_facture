@@ -1,5 +1,6 @@
 <?php
 require_once "../functions/database.php";
+require_once "../functions/logs.php";
 
 
 function InsertService($name, $description, $price, $unit){
@@ -14,6 +15,13 @@ function InsertService($name, $description, $price, $unit){
         $queryInsert->bindParam(":unit", $unit);
       
         $queryInsert->execute();
+
+        
+        InsertHistorique(
+            $_SESSION['user_id'],
+            "CREATE",
+            $_SESSION['first_name']." ".$_SESSION['last_name'] ." a créé le service « $name »."
+        );
 
         header("Location: ../pages/dashboard.php");
 
