@@ -2,8 +2,17 @@
  session_start();
 
 require_once "../functions/users.php";
+require_once "../functions/factures.php";
+require_once "../functions/devis.php";
+require_once "../functions/paiements.php";
 
  checkLogin();
+
+ $factures = getAllFacturesDashboard();
+ $devis = getAllDevisDashboard();
+ $paiements = getAllPaiementsDashboard();
+$logs = getLogs();
+
 
 
 ?>
@@ -17,12 +26,43 @@ require_once "../functions/users.php";
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/etat.css" rel="stylesheet">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="../assets/favicon/site.webmanifest">
 </head>
 <body>
+
+
+<style>
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200 !important;
+  background: var(--color-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-base) var(--ease-standard), visibility var(--duration-base);
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-width);
+  z-index:1300 !important;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-top-right-radius: var(--radius-xl);
+  border-bottom-right-radius: var(--radius-xl);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+</style>
 <div class="app-shell">
 
   <!-- SIDEBAR -->
@@ -146,43 +186,83 @@ require_once "../functions/users.php";
             <table class="table-ds">
               <thead><tr><th>Facture</th><th>Client</th><th>Montant</th><th>Statut</th></tr></thead>
               <tbody>
-                <tr data-href="facture-detail.php"><td class="cell-strong">FA-2026-0142</td><td><div class="cell-entity"><span class="avatar avatar--sm">SL</span> Studio Lumière</div></td><td class="text-mono">2 400 €</td><td><span class="badge-ds badge-success">Payée</span></td></tr>
-                <tr data-href="facture-detail.php"><td class="cell-strong">FA-2026-0141</td><td><div class="cell-entity"><span class="avatar avatar--sm">NX</span> Nexa SARL</div></td><td class="text-mono">980 €</td><td><span class="badge-ds badge-warning">En attente</span></td></tr>
-                <tr data-href="facture-detail.php"><td class="cell-strong">FA-2026-0140</td><td><div class="cell-entity"><span class="avatar avatar--sm">BF</span> Boréal Finance</div></td><td class="text-mono">5 120 €</td><td><span class="badge-ds badge-error">En retard</span></td></tr>
-                <tr data-href="facture-detail.php"><td class="cell-strong">FA-2026-0139</td><td><div class="cell-entity"><span class="avatar avatar--sm">AV</span> Avelia Group</div></td><td class="text-mono">1 750 €</td><td><span class="badge-ds badge-info">Envoyée</span></td></tr>
-                <tr data-href="facture-detail.php"><td class="cell-strong">FA-2026-0138</td><td><div class="cell-entity"><span class="avatar avatar--sm">KP</span> Kappa Design</div></td><td class="text-mono">640 €</td><td><span class="badge-ds badge-success">Payée</span></td></tr>
-              </tbody>
+
+              <?php foreach($factures as $facture):?>
+
+
+              <tr data-href="detail_facture.php">
+                <td class="cell-strong"><?= $facture['numero_facture'] ?></td>
+                <td><div class="cell-entity"><span class="avatar avatar--sm"><i class="bi bi-person-fill"></i></span><?= $facture['firstname_customer'] ?> <?= $facture['lastname_customer'] ?></div></td>
+                <td class="text-mono"><?= $facture['total_ttc'] ?> €</td>
+                <td><span class="badge-ds badge-facture-<?= $facture['id_status_facture'] ?>"><?= $facture['name_status_facture'] ?></span></td>
+            </tr>
+
+                <?php endforeach?>
+
+            </tbody>
             </table>
           </div>
         </div>
         <div class="col-xl-5">
           <div class="card-ds h-100">
-            <div class="card-ds__head"><h3 style="font-size:var(--fs-h4)">Paiements récents</h3><a href="paiements.php" class="btn btn-ghost btn-sm">Tout voir</a></div>
+            <div class="card-ds__head"><h3 style="font-size:var(--fs-h4)">Paiements récents</h3><a href="paiement.php" class="btn btn-ghost btn-sm">Tout voir </a></div>
             <ul class="list-unstyled mb-0 stack-3">
-              <li class="d-flex align-items-center gap-3"><span class="kpi__icon kpi__icon--success" style="width:38px;height:38px"><i class="bi bi-arrow-down-left"></i></span><div class="grow"><div class="fw-medium">Studio Lumière</div><small class="text-secondary">Virement · aujourd'hui</small></div><span class="fw-semibold text-mono">+2 400 €</span></li>
-              <li class="divider my-0"></li>
-              <li class="d-flex align-items-center gap-3"><span class="kpi__icon kpi__icon--success" style="width:38px;height:38px"><i class="bi bi-arrow-down-left"></i></span><div class="grow"><div class="fw-medium">Kappa Design</div><small class="text-secondary">Carte · hier</small></div><span class="fw-semibold text-mono">+640 €</span></li>
-              <li class="divider my-0"></li>
-              <li class="d-flex align-items-center gap-3"><span class="kpi__icon kpi__icon--success" style="width:38px;height:38px"><i class="bi bi-arrow-down-left"></i></span><div class="grow"><div class="fw-medium">Orys Conseil</div><small class="text-secondary">Virement · 27 juin</small></div><span class="fw-semibold text-mono">+3 200 €</span></li>
-              <li class="divider my-0"></li>
-              <li class="d-flex align-items-center gap-3"><span class="kpi__icon kpi__icon--success" style="width:38px;height:38px"><i class="bi bi-arrow-down-left"></i></span><div class="grow"><div class="fw-medium">Vega Studio</div><small class="text-secondary">Carte · 25 juin</small></div><span class="fw-semibold text-mono">+1 100 €</span></li>
+
+            <?php foreach($paiements as $paiement):?>
+              <li class="d-flex align-items-center gap-3"><span class="kpi__icon kpi__icon--success" style="width:38px;height:38px"><i class="bi bi-arrow-down-left"></i></span><div class="grow"><div class="fw-medium"><?= $paiement['firstname_customer'] ?> <?= $paiement['lastname_customer'] ?></div><small class="badge-ds badge-paiement-<?= $paiement['id_mode_paiement'] ?>"><?= $paiement['name_mode_paiement'] ?> </small> <small class="text-secondery"> · <?= date('d/m/Y', strtotime($paiement['date_paiement'])) ?></small></div><span class="fw-semibold text-mono">+<?= $paiement['montant_paiement'] ?> €</span></li>
+
+
+
+              <?php endforeach?>
+      
             </ul>
           </div>
         </div>
       </div>
 
-      <!-- Activité récente -->
-      <div class="section">
-        <div class="card-ds">
-          <div class="card-ds__head"><h3 style="font-size:var(--fs-h4)">Activité récente</h3></div>
+
+
+      <div class="row g-3 section">
+        <div class="col-xl-7">
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <div class="grow"><h3 class="mb-0" style="font-size:var(--fs-h4)">Derniers devis</h3></div>
+              <a href="devis.php" class="btn btn-ghost btn-sm">Tout voir <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <table class="table-ds">
+              <thead><tr><th>Devis</th><th>Client</th><th>Montant</th><th>Statut</th></tr></thead>
+              <tbody>
+              <?php foreach($devis as $dev):?>
+
+
+                    <tr data-href="detail_devis.php">
+                    <td class="cell-strong"><?= $dev['numero_devis'] ?></td>
+                    <td><div class="cell-entity"><span class="avatar avatar--sm"><i class="bi bi-person-fill"></i></span><?= $dev['firstname_customer'] ?> <?= $dev['lastname_customer'] ?></div></td>
+                    <td class="text-mono"><?= $dev['total_ttc'] ?> €</td>
+                    <td><span class="badge-ds badge-devis-<?= $dev['id_status_devis'] ?>"><?= $dev['name_status_devis'] ?></span></td>
+                    </tr>
+
+                    <?php endforeach?>
+               
+                </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-xl-5">
+          <div class="card-ds h-100">
+            <div class="card-ds__head"><h3 style="font-size:var(--fs-h4)">Activités récentes</h3><a href="logs.php" class="btn btn-ghost btn-sm">Tout voir</a></div>
           <ul class="list-unstyled mb-0 stack-3">
-            <li class="d-flex align-items-start gap-3"><span class="avatar avatar--sm"><i class="bi bi-person-fill"></i></span><div><span class="fw-medium">Vous</span> avez créé la facture <a href="facture-detail.php" class="fw-semibold">FA-2026-0142</a>.<div><small class="text-muted-2">il y a 2 h</small></div></div></li>
-            <li class="d-flex align-items-start gap-3"><span class="kpi__icon kpi__icon--success" style="width:32px;height:32px"><i class="bi bi-check2"></i></span><div>Le paiement de <span class="fw-medium">Studio Lumière</span> a été encaissé.<div><small class="text-muted-2">il y a 3 h</small></div></div></li>
-            <li class="d-flex align-items-start gap-3"><span class="kpi__icon kpi__icon--info" style="width:32px;height:32px"><i class="bi bi-send"></i></span><div>Le devis <span class="fw-medium">DV-2026-0089</span> a été envoyé à Nexa SARL.<div><small class="text-muted-2">hier</small></div></div></li>
-            <li class="d-flex align-items-start gap-3"><span class="kpi__icon kpi__icon--warning" style="width:32px;height:32px"><i class="bi bi-clock-history"></i></span><div>Relance automatique envoyée à <span class="fw-medium">Boréal Finance</span>.<div><small class="text-muted-2">hier</small></div></div></li>
+            <?php foreach($logs as $log): ?>
+          <li class="d-flex align-items-start gap-3"><span class="avatar avatar--sm"><i class="bi bi-person-fill"></i></span><div><span class="fw-medium"> <?= $log['description_historique'] ?> <div><small class="text-muted-2"><?= date('d-m-Y - H:i:s', strtotime($log['date_action'])) ?></small></div></div></li>
+
+            <?php endforeach?>
+
           </ul>
+     
+          </div>
         </div>
       </div>
+
 
     </main>
   </div>
