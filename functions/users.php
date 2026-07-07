@@ -1,5 +1,6 @@
 <?php
 require_once "../functions/database.php";
+require_once "../functions/logs.php";
 
 function register($firstName, $lastName, $email, $role){
 
@@ -16,12 +17,16 @@ function register($firstName, $lastName, $email, $role){
     $queryInsert->bindParam(":password", $hash);
     $queryInsert->bindParam(":role", $role);
 
-   $result = $queryInsert->execute();
+    $queryInsert->execute();
+
+    InsertHistorique(
+        $_SESSION['user_id'],
+        "CREATE",
+        "L'admin ". $_SESSION['first_name']." ".$_SESSION['last_name'] ." a créé le compte de l'employé «". $firstName." "." $lastName »"
+    );
 
 
    header("Location: /facturation/pages/dashboard.php");
-
-    //var_dump($result);
 
 
 }catch(PDOException $e){
@@ -72,9 +77,13 @@ function connexion($email, $password){
     $_SESSION["email"]      = $result["email_user"];
     $_SESSION["role"]       = $result["role_id"];
     $_SESSION["user_id"]    = $result["id_user"];
-     $_SESSION['is_logged_in'] = true;
+    $_SESSION['is_logged_in'] = true;
 
-
+     InsertHistorique(
+        $_SESSION['user_id'],
+        "LOGIN",
+        $_SESSION['first_name']." ".$_SESSION['last_name']." s'est connecté à l'application."
+    );
         header("Location: ../pages/dashboard.php");
         exit();
     }
