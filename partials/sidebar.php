@@ -25,7 +25,7 @@ $profil = getUserById($id);
       <a href="paiement.php" class="nav-item"><i class="bi bi-credit-card"></i> Paiements</a>
       <a href="employer.php" class="nav-item"><i class="bi bi-person-gear"></i> Employés</a>
       <span class="sidebar__section-label">Système</span>
-      <a href="#" class="nav-item"><i class="bi bi-gear"></i> Paramètres</a>
+      <a href="logs.php" class="nav-item"><i class="bi bi-gear"></i> Paramètres</a>
       <a href="profil.php" class="nav-item"><i class="bi bi-person-workspace"></i> Profil</a>
 
       <a href="../partials/logout.php" class="nav-item"><i class="bi bi-box-arrow-right"></i> Déconnexion</a>
@@ -76,6 +76,8 @@ $profil = getUserById($id);
       </div>
     </div>
   </aside>
+
+  <script src="../assets/js/app.js"></script>
 
 
 
