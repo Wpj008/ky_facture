@@ -1,5 +1,5 @@
 <?php
-require_once "../functions/database.php";
+require_once "database.php";
 
 function InsertHistorique($user_id, $action, $description){
 
@@ -24,6 +24,32 @@ function InsertHistorique($user_id, $action, $description){
     }
 
 }
+
+
+
+function getAllLogs(){
+
+
+    try{
+
+        $querySelect = getPDO()->prepare("SELECT * FROM historiques INNER JOIN users ON users.id_user = historiques.user_id  ORDER BY id_historique DESC ");
+
+        $querySelect->execute();
+
+        $result = $querySelect->fetchAll();
+
+        return $result;
+
+
+    }   catch(PDOException $e){
+
+    die($e->getMessage());
+
+}
+
+
+}
+
 
 
 
