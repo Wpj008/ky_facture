@@ -6,7 +6,7 @@ require_once "../functions/users.php";
 
  checkLogin();
 
-$logs = getLogs();
+$logs = getAllLogs();
 
 ?>
 
@@ -193,98 +193,7 @@ $logs = getLogs();
 
                         <?php endforeach ?>
 
-                        <!-- Ligne 2 -->
-                        <tr>
-                            <td>
-                                <strong>15/07/2026</strong><br>
-                                <small>11:03</small>
-                            </td>
-
-                            <td>
-                                <div class="user-info">
-                                    <div class="avatar"><i class="bi bi-person-fill"></i></div>
-                                    <span>Admin</span>
-                                </div>
-                            </td>
-
-                            <td>
-                                <span class="badge badge-create">
-                                    <i class="bi bi-plus-circle-fill"></i>
-                                    Création
-                                </span>
-                            </td>
-
-                            <td>Client</td>
-
-                            <td>
-                                Création du client
-                                <strong>Jean Dupont</strong>
-                            </td>
-
-                            <td>192.168.1.12</td>
-                        </tr>
-
-                        <!-- Ligne 3 -->
-                        <tr>
-                            <td>
-                                <strong>14/07/2026</strong><br>
-                                <small>18:40</small>
-                            </td>
-
-                            <td>
-                                <div class="user-info">
-                                    <div class="avatar"><i class="bi bi-person-fill"></i></div>
-                                    <span>Paul Paolo</span>
-                                </div>
-                            </td>
-
-                            <td>
-                                <span class="badge badge-delete">
-                                    <i class="bi bi-trash-fill"></i>
-                                    Suppression
-                                </span>
-                            </td>
-
-                            <td>Service</td>
-
-                            <td>
-                                Suppression du service
-                                <strong>Maintenance</strong>
-                            </td>
-
-                            <td>192.168.1.18</td>
-                        </tr>
-
-                        <!-- Ligne 4 -->
-                        <tr>
-                            <td>
-                                <strong>14/07/2026</strong><br>
-                                <small>08:12</small>
-                            </td>
-
-                            <td>
-                                <div class="user-info">
-                                    <div class="avatar"><i class="bi bi-person-fill"></i></div>
-                                    <span>Administrateur</span>
-                                </div>
-                            </td>
-
-                            <td>
-                                <span class="badge badge-login">
-                                    <i class="bi bi-box-arrow-in-right"></i>
-                                    Connexion
-                                </span>
-                            </td>
-
-                            <td>Système</td>
-
-                            <td>
-                                Connexion à l'application
-                            </td>
-
-                            <td>192.168.1.20</td>
-                        </tr>
-
+                       
                     </tbody>
 
                 </table>
