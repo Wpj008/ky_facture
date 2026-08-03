@@ -27,7 +27,7 @@ $factures = getFacturesByCustomer($id);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studio Lumière — Factura</title>
+  <title>KY-Facture</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="../assets/css/style.css" rel="stylesheet">
@@ -91,7 +91,7 @@ $factures = getFacturesByCustomer($id);
           </div>
         </div>
         <div class="cluster-2">
-          <button class="btn btn-secondary"><i class="bi bi-pencil"></i> Modifier</button>
+          <a href="customer_update.php?id=<?= $customer['id_customer'] ?>" class="btn btn-secondary"><i class="bi bi-pencil"></i> Modifier</a>
           <a href="facture_create.php" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nouvelle facture</a>
         </div>
       </div>
