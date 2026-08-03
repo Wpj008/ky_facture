@@ -57,6 +57,33 @@ $customers = getAllCustomers();
   border-bottom-right-radius: var(--radius-xl);
   transition: transform var(--duration-slow) var(--ease-out);
 }
+
+
+.cell-actions {
+    display: flex;
+    justify-content: center; /* centre les icônes */
+    align-items: center;
+    gap: 8px; /* espace entre les icônes */
+}
+
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.garbage{
+    color: red;
+}
+
+.pencil{
+    color: #00ACFE;
+}
+
+.eye{
+
+    color: #00bd1f;
+}
 </style>
         <div class="app-shell">
 
@@ -101,8 +128,25 @@ $customers = getAllCustomers();
                 <td class="cell-muted"><?= $customer['email_customer'] ?></td>
                 <td>-</td><td class="text-mono"><?= $customer['type_customer'] ?></td>
                 <td><span class="badge-ds badge-success">Actif</span></td>
-                <td class="cell-actions"><a href="detail_customer.php?id=<?= $customer['id_customer'] ?>" class="icon-button btn-lm"><i class="bi bi-eye"></i></a></td>
-            </tr>
+                
+                <td class="cell-actions">
+                    <a class="icon-button btn-lm" href="detail_customer.php?id=<?= $customer['id_customer'] ?>">
+                        <i class="eye bi bi-eye"></i>
+                    </a>
+
+                    <a class="icon-button btn-lm" href="customer_update.php?id=<?= $customer['id_customer'] ?>">
+                    <i class="pencil bi bi-pencil"></i>
+                    </a>
+
+                    <a class="icon-button btn-lm" href="delete_profil.php?id=<?= $customer['id_customer'] ?>">
+                    <i class="garbage bi bi-trash3"></i>
+                    </a>
+                </td>        
+            
+            
+            
+            
+              </tr>
             <?php endforeach; ?>
           </tbody>
          
