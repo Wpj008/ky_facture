@@ -1,6 +1,6 @@
 <?php
-require_once "../functions/database.php";
-require_once "../functions/logs.php";
+require_once "database.php";
+require_once "logs.php";
 
 
 function InsertDevis($numero_devis, $customer_id, $date_creation, $date_echeance, $status, $total_ht, $total_tva, $total_ttc, $created_by, $service, $quantite, $prix, $tva, $montant_ht, $montant_ttc){
@@ -56,7 +56,7 @@ function InsertDevis($numero_devis, $customer_id, $date_creation, $date_echeance
         InsertHistorique(
             $_SESSION['user_id'],
             "CREATE",
-            $_SESSION['first_name']." ".$_SESSION['last_name'] ." a créé le devis n° $numero_devis pour le client dont Ref: « $customer_id » d'un montant global de ".number_format($montant_ttc,2,","," ")." €."
+            $_SESSION['first_name']." ".$_SESSION['last_name'] ." a créé le devis n° $numero_devis pour le client dont Ref: « $customer_id » d'un montant global de ".number_format($total_ttc,2,","," ")." €."
          );
 
         header("Location: ../pages/devis.php");
@@ -277,5 +277,22 @@ function deleteDevis($id_devis){
 }
 
 
+function nombreDevisMois(){
+    try{
+    
+
+        $req = getPDO()->prepare("SELECT COUNT(*) AS total FROM devis WHERE MONTH(date_creation_devis) = MONTH(NOW()) AND YEAR(date_creation_devis) = YEAR(NOW())");
+        
+        $req->execute();
+        
+        $resultat = $req->fetch();
+
+        return $resultat['total'];
+
+
+    }catch(PDOException $e){
+        echo "Erreur lors de la récupération du nombre de devis du mois : " . $e->getMessage();
+    }
+}
 
 ?>
