@@ -1,5 +1,8 @@
 # Composer
 vendor/
+phpmail/
+config/
+
 
 # CSS personnel
 assets/css/style.css
@@ -11,4 +14,5 @@ assets/css/style.css
 *.log
 
 # Fichiers bdd
-.sql
+sql/
+*.sql
