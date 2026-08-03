@@ -1,6 +1,6 @@
 <?php
-require_once "../functions/database.php";
-require_once "../functions/logs.php";
+require_once "database.php";
+require_once "logs.php";
 
 
 function InsertFacture($numero_facture, $customer_id, $date_creation, $date_echeance, $status, $total_ht, $total_tva, $total_ttc, $created_by, $service, $quantite, $prix, $tva, $montant_ht, $montant_ttc){
@@ -15,7 +15,7 @@ function InsertFacture($numero_facture, $customer_id, $date_creation, $date_eche
 
         $queryInsert->bindParam(":numero", $numero_facture);
         $queryInsert->bindParam(":customer", $customer_id);
-        $queryInsert->bindParam("d:ate_cretaion", $date_creation);
+        $queryInsert->bindParam(":date_creation", $date_creation);
         $queryInsert->bindParam(":date_echeance",$date_echeance,);
         $queryInsert->bindParam(":status",$status,);
         $queryInsert->bindParam(":ht",$total_ht,);
@@ -55,7 +55,7 @@ function InsertFacture($numero_facture, $customer_id, $date_creation, $date_eche
         InsertHistorique(
             $_SESSION['user_id'],
             "CREATE",
-            $_SESSION['first_name']." ".$_SESSION['last_name'] ." a créé la facture n°$numero_facture pour le client Ref : « $customer_id » d'un montant global de ".number_format($montant_ttc,2,","," ")." €."
+            $_SESSION['first_name']." ".$_SESSION['last_name'] ." a créé la facture n°$numero_facture pour le client Ref : « $customer_id » d'un montant global de ".number_format($total_ttc,2,","," ")." €."
         );
 
        header("Location: ../pages/facture.php");
@@ -264,6 +264,22 @@ function deleteFacture($id_facture){
     }
 
 
+
+}
+
+
+function nombreFacturesMois(){
+
+    try{
+        $pdo = getPDO();
+        $query = $pdo->prepare("SELECT COUNT(*) AS total FROM factures WHERE MONTH(date_creation_facture) = MONTH(NOW()) AND YEAR(date_creation_facture) = YEAR(NOW())");
+        $query->execute();
+        $result = $query->fetch();
+        return $result['total'];
+
+    }catch(PDOException $e){
+        echo "Erreur lors de la récupération du nombre de factures du mois : " . $e->getMessage();
+    }
 
 }
 
