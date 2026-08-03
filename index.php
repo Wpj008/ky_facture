@@ -1,8 +1,14 @@
 <?php
 
+require_once 'functions/factures.php';
+require_once 'functions/devis.php';
+require_once 'functions/paiements.php';
+
+$nbFactures = nombreFacturesMois();
+$nbDevis = nombreDevisMois();
+$nbPaiements = nombrePaiementsMois();
+
 ?>
-
-
 
 
 <!DOCTYPE html>
@@ -45,16 +51,12 @@
           <div class="form-group">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <label class="form-label mb-0">Mot de passe</label>
-              <a href="#" class="text-small fw-medium">Mot de passe oublié ?</a>
+              <a href="partials/forgot_password.php" class="text-small fw-medium">Mot de passe oublié ?</a>
             </div>
             <div class="input-icon">
               <i class="bi bi-lock"></i>
               <input type="password" name="password" class="form-control-ds" placeholder="••••••••" value="" required>
             </div>
-          </div>
-          <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" id="remember">
-            <label class="form-check-label text-secondary" for="remember">Rester connecté sur cet appareil</label>
           </div>
 
           <button type="submit" name="submit"  class="btn btn-primary btn-lg btn-block"> Se connecter </button>
@@ -71,7 +73,7 @@
   <div class="auth__brand-content">
 
     <span class="badge-ds badge-primary no-dot mb-4" style="background:rgba(255,255,255,.14);color:#fff">
-      <i class="bi bi-receipt-cutoff"></i> KY-Facture </span>
+     KY-Facture </span>
 
     <h2 class="auth__brand-title">
       Centralisez vos devis, factures et paiements.
@@ -91,18 +93,18 @@
 <div class="stack-3 mt-4">
 
 <div class="d-flex justify-content-between align-items-center">
-    <span style="color:#374151;">Factures émises</span>
-    <strong style="color:#111827;">18</strong>
+<span style="color: #000;">Factures émises</span>
+<strong style="color: #000;"><?= $nbFactures ?></strong>
 </div>
 
 <div class="d-flex justify-content-between align-items-center">
-    <span style="color:#374151;">Devis créés</span>
-    <strong style="color:#111827;">7</strong>
+<span style="color: #000;">Devis créés</span>
+<strong style="color: #000;"><?= $nbDevis ?></strong>
 </div>
 
 <div class="d-flex justify-content-between align-items-center">
-    <span style="color:#374151;">Paiements reçus</span>
-    <strong style="color:#111827;">15</strong>
+<span style="color: #000;">Paiements reçus</span>
+<strong style="color: #000;"><?= $nbPaiements ?></strong>
 </div>
 
 
