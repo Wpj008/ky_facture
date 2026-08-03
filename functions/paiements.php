@@ -1,6 +1,6 @@
 <?php
-require_once "../functions/database.php";
-require_once "../functions/logs.php";
+require_once "database.php";
+require_once "logs.php";
 
 function InsertPaiement($facture_id, $facture, $date, $montant, $mode, $reference, $commentaire, $ttc_facture){
     $pdo = getPDO();
@@ -77,6 +77,25 @@ function getAllModePaiements(){
     $query = $pdo->prepare("SELECT * FROM mode_paiement");
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
+function nombrePaiementsMois(){
+
+    try {
+      
+
+    $req = getPDO()->prepare("SELECT COUNT(*) AS total FROM paiements WHERE MONTH(date_paiement) = MONTH(NOW()) AND YEAR(date_paiement) = YEAR(NOW())");
+
+    $req->execute();
+    $resultat = $req->fetch();
+
+    return $resultat['total'];
+} 
+    catch (PDOException $e) {
+        echo "Erreur lors de la récupération du nombre de paiements du mois : " . $e->getMessage();
+    }
 }
 
 
