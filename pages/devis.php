@@ -8,6 +8,10 @@ require_once "../functions/devis.php";
  checkLogin();
 
  $devis = getAllDevis();
+ $totalDevis      = getTotalDevis();
+$pendingDevis    = getPendingDevis();
+$acceptedDevis   = getAcceptedDevis();
+$acceptanceRate  = getAcceptanceRate();
 
 
 ?>
@@ -102,25 +106,59 @@ require_once "../functions/devis.php";
 
     <main class="page">
       <div class="page-header">
-        <div><h1>Devis</h1><p>37 devis · suivez vos propositions commerciales.</p></div>
+        <div><h1>Devis</h1><p><?= $totalDevis ?> devis · suivez vos propositions commerciales.</p></div>
         <a href="devis_create.php" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nouveau devis</a>
       </div>
 
       <div class="row g-3 section">
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Total devis</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)">37</div></div></div>
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">En attente</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)">7</div></div></div>
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Acceptés</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)">24</div></div></div>
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Taux d'accept.</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)">68%</div></div></div>
-      </div>
+
+<div class="col-6 col-lg-3">
+    <div class="kpi">
+        <span class="kpi__label">Total devis</span>
+        <div class="kpi__value text-mono" style="font-size:var(--fs-h2)">
+            <?= $totalDevis ?>
+        </div>
+    </div>
+</div>
+
+<div class="col-6 col-lg-3">
+    <div class="kpi">
+        <span class="kpi__label">En attente</span>
+        <div class="kpi__value text-mono" style="font-size:var(--fs-h2)">
+            <?= $pendingDevis ?>
+        </div>
+    </div>
+</div>
+
+<div class="col-6 col-lg-3">
+    <div class="kpi">
+        <span class="kpi__label">Acceptés</span>
+        <div class="kpi__value text-mono" style="font-size:var(--fs-h2)">
+            <?= $acceptedDevis ?>
+        </div>
+    </div>
+</div>
+
+<div class="col-6 col-lg-3">
+    <div class="kpi">
+        <span class="kpi__label">Taux d'accept.</span>
+        <div class="kpi__value text-mono" style="font-size:var(--fs-h2)">
+            <?= $acceptanceRate ?>%
+        </div>
+    </div>
+</div>
+
+</div>
 
       <div class="table-wrap" data-paginate="#devisTable" data-per-page="8">
         <div class="table-toolbar">
           <div class="navbar-app__search grow" style="max-width:320px"><i class="bi bi-search"></i><input type="search" data-table-search="#devisTable" placeholder="Rechercher un devis…"></div>
           <div class="cluster-2" data-filter-group="#devisTable">
             <button class="page-btn active" data-filter-value="all">Tous</button>
-            <button class="page-btn" data-filter-value="attente">En attente</button>
-            <button class="page-btn" data-filter-value="accepte">Acceptés</button>
-            <button class="page-btn" data-filter-value="refuse">Refusés</button>
+            <button class="page-btn" data-filter-value="Brouillon">En attente</button>
+            <button class="page-btn" data-filter-value="Envoyé">Envoyés</button>
+            <button class="page-btn" data-filter-value="Accepté">Acceptés</button>
+            <button class="page-btn" data-filter-value="Refusé">Refusés</button>
           </div>
         </div>
         <table class="table-ds" id="devisTable">
@@ -129,7 +167,7 @@ require_once "../functions/devis.php";
           <tbody>
 
           <?php foreach($devis as $dev):?>
-            <tr data-status="attente">
+            <tr data-status="<?= $dev['name_status_devis'] ?>">
                 <td class="cell-strong"><?= $dev['numero_devis'] ?></td>
                 <td><div class="cell-entity"><span class="avatar avatar--sm"><i class="bi bi-person-fill"></i></span><?= $dev['firstname_customer']. ' '. $dev['lastname_customer'] ?></div></td>
                 <td class="cell-muted"><?= $dev['date_creation_devis'] ?></td>
