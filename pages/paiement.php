@@ -8,6 +8,13 @@ require_once "../functions/users.php";
  checkLogin();
 
 $paiements = getAllPaiements();
+$totalMois = getTotalPaiementsMois();
+
+$montantAttente = getMontantEnAttente();
+
+$nbFacturesAttente = getNombreFacturesEnAttente();
+
+$delaiMoyen = getDelaiMoyenPaiement();
 
 ?>
 
@@ -78,9 +85,66 @@ $paiements = getAllPaiements();
       </div>
 
       <div class="row g-3 section">
-        <div class="col-12 col-lg-4"><div class="kpi"><div class="kpi__top"><span class="kpi__label">Encaissé ce mois</span><span class="kpi__icon kpi__icon--success"><i class="bi bi-cash-stack"></i></span></div><div class="kpi__value text-mono">61 200 €</div><div><span class="kpi__delta kpi__delta--up"><i class="bi bi-arrow-up-short"></i>8 %</span> <span>vs mois dernier</span></div></div></div>
-        <div class="col-6 col-lg-4"><div class="kpi"><div class="kpi__top"><span class="kpi__label">En attente</span><span class="kpi__icon kpi__icon--warning"><i class="bi bi-hourglass-split"></i></span></div><div class="kpi__value text-mono">18 000 €</div><div><span class="text-secondary">9 factures</span></div></div></div>
-        <div class="col-6 col-lg-4"><div class="kpi"><div class="kpi__top"><span class="kpi__label">Délai moyen</span><span class="kpi__icon kpi__icon--info"><i class="bi bi-speedometer2"></i></span></div><div class="kpi__value text-mono">14 j</div><div><span class="text-secondary">de règlement</span></div></div></div>
+
+      <div class="col-12 col-lg-4">
+          <div class="kpi">
+              <div class="kpi__top">
+                  <span class="kpi__label">Encaissé ce mois</span>
+                  <span class="kpi__icon kpi__icon--success">
+                      <i class="bi bi-cash-stack"></i>
+                  </span>
+              </div>
+
+              <div class="kpi__value text-mono">
+                  <?= number_format($totalMois) ?> €
+              </div>
+
+              <div>
+                  <span class="text-secondary">Paiements enregistrés ce mois</span>
+              </div>
+          </div>
+      </div>
+
+      <div class="col-6 col-lg-4">
+          <div class="kpi">
+              <div class="kpi__top">
+                  <span class="kpi__label">En attente</span>
+                  <span class="kpi__icon kpi__icon--warning">
+                      <i class="bi bi-hourglass-split"></i>
+                  </span>
+              </div>
+
+              <div class="kpi__value text-mono">
+                  <?= number_format($montantAttente) ?> €
+              </div>
+
+              <div>
+                  <span class="text-secondary">
+                      <?= $nbFacturesAttente ?> facture(s)
+                  </span>
+              </div>
+          </div>
+      </div>
+
+      <div class="col-6 col-lg-4">
+          <div class="kpi">
+              <div class="kpi__top">
+                  <span class="kpi__label">Délai moyen</span>
+                  <span class="kpi__icon kpi__icon--info">
+                      <i class="bi bi-speedometer2"></i>
+                  </span>
+              </div>
+
+              <div class="kpi__value text-mono">
+                  <?= $delaiMoyen ?> j
+              </div>
+
+              <div>
+                  <span class="text-secondary">de règlement</span>
+              </div>
+          </div>
+      </div>
+
       </div>
 
       <div class="table-wrap" data-paginate="#paiementsTable" data-per-page="8">
