@@ -98,7 +98,7 @@ $factures = getFacturesByCustomer($id);
 
       <div class="row g-3 section">
         <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Catégorie</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)"><?= $customer['type_customer'] ?></div></div></div>
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Factures</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)">14</div></div></div>
+        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Factures</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)"><?= $customer['nb_factures'] ?></div></div></div>
         <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">En attente</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)">2 400 €</div></div></div>
         <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Délai paiement moy.</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)">12 j</div></div></div>
       </div>
