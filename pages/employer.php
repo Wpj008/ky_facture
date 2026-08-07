@@ -140,7 +140,7 @@ $users = getAllUsers();
                     <i class="pencil bi bi-pencil"></i>
                     </a>
 
-                    <a class="icon-button btn-lm" href="update_profil.php?id=<?= $user['id_user'] ?>">
+                    <a class="icon-button btn-lm" href="delete_employer.php?id=<?= $user['id_user'] ?>">
                     <i class="garbage bi bi-trash3"></i>
                     </a>
                 </td>               
