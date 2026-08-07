@@ -111,4 +111,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update_customer'])){
     }
 }
 
+
+
+
+
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_employer'])) {
+
+    $user_id = $_POST['id_user'];
+
+    deleteUser($user_id);
+
+    header("Location: ../pages/employer.php");
+    exit();
+}
+
 ?>
