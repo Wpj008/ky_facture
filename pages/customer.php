@@ -126,7 +126,8 @@ $customers = getAllCustomers();
             <tr data-href="client-detail.php" data-status="actif">
                 <td><div class="cell-entity"><span class="avatar avatar--sm"><i class="bi bi-person-fill"></i></span><div><div class="cell-strong"><?= $customer['lastname_customer'] ?> <?= $customer['firstname_customer'] ?></div><small class="text-secondary"><?= $customer['ville_customer'] ?></small></div></div></td>
                 <td class="cell-muted"><?= $customer['email_customer'] ?></td>
-                <td>-</td><td class="text-mono"><?= $customer['type_customer'] ?></td>
+                <td><?= $customer['nb_factures'] ?></td>
+                <td class="text-mono"><?= $customer['type_customer'] ?></td>
                 <td><span class="badge-ds badge-success">Actif</span></td>
                 
                 <td class="cell-actions">
@@ -138,7 +139,7 @@ $customers = getAllCustomers();
                     <i class="pencil bi bi-pencil"></i>
                     </a>
 
-                    <a class="icon-button btn-lm" href="delete_profil.php?id=<?= $customer['id_customer'] ?>">
+                    <a class="icon-button btn-lm" href="delete_customer.php?id=<?= $customer['id_customer'] ?>">
                     <i class="garbage bi bi-trash3"></i>
                     </a>
                 </td>        
