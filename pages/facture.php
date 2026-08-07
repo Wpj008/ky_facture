@@ -8,6 +8,11 @@ require_once "../functions/users.php";
  checkLogin();
 
 $factures = getAllFactures();
+$totalFacture = getTotalFacture();
+$totalEncaisse = getTotalEncaisse();
+$totalAttente = getTotalAttente();
+$totalRetard = getTotalRetard();
+$nbrFactures = getTotalNbrFactures();
 
 
 ?>
@@ -88,7 +93,7 @@ $factures = getAllFactures();
 
 <div class="app-shell">
 
-<?php require_once "../partials/sidebar.php" ?>
+  <?php require_once "../partials/sidebar.php" ?>
   <div class="sidebar-backdrop"></div>
 
   <div class="main">
@@ -100,15 +105,48 @@ $factures = getAllFactures();
 
     <main class="page">
       <div class="page-header">
-        <div><h1>Factures</h1><p>142 factures émises · suivez les encaissements.</p></div>
+        <div><h1>Factures</h1><p><?= $nbrFactures ?> factures émises · suivez les encaissements.</p></div>
         <a href="facture_create.php" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nouvelle facture</a>
       </div>
 
       <div class="row g-3 section">
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Total facturé</span><div class="kpi__value text-mono" style="font-size:var(--fs-h2)">84 320 €</div></div></div>
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">Encaissé</span><div class="kpi__value text-mono state-success" style="font-size:var(--fs-h2)">61 200 €</div></div></div>
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">En attente</span><div class="kpi__value text-mono state-warning" style="font-size:var(--fs-h2)">18 000 €</div></div></div>
-        <div class="col-6 col-lg-3"><div class="kpi"><span class="kpi__label">En retard</span><div class="kpi__value text-mono state-error" style="font-size:var(--fs-h2)">5 120 €</div></div></div>
+
+      <div class="col-6 col-lg-3">
+          <div class="kpi">
+              <span class="kpi__label">Total facturé</span>
+              <div class="kpi__value text-mono" style="font-size:var(--fs-h2)">
+                  <?= number_format($totalFacture) ?> €
+              </div>
+          </div>
+      </div>
+        
+      <div class="col-6 col-lg-3">
+          <div class="kpi">
+              <span class="kpi__label">Encaissé</span>
+              <div class="kpi__value text-mono state-success" style="font-size:var(--fs-h2)">
+                  <?= number_format($totalEncaisse) ?> €
+              </div>
+          </div>
+      </div>
+
+      <div class="col-6 col-lg-3">
+          <div class="kpi">
+              <span class="kpi__label">En attente</span>
+              <div class="kpi__value text-mono state-warning" style="font-size:var(--fs-h2)">
+                  <?= number_format($totalAttente) ?> €
+              </div>
+          </div>
+      </div>
+
+      <div class="col-6 col-lg-3">
+          <div class="kpi">
+              <span class="kpi__label">En retard</span>
+              <div class="kpi__value text-mono state-error" style="font-size:var(--fs-h2)">
+                  <?= number_format($totalRetard) ?> €
+              </div>
+          </div>
+      </div>
+
       </div>
 
       <div class="table-wrap" data-paginate="#facturesTable" data-per-page="8">
@@ -116,9 +154,10 @@ $factures = getAllFactures();
           <div class="navbar-app__search grow" style="max-width:320px"><i class="bi bi-search"></i><input type="search" data-table-search="#facturesTable" placeholder="Rechercher une facture…"></div>
           <div class="cluster-2" data-filter-group="#facturesTable">
             <button class="page-btn active" data-filter-value="all">Toutes</button>
-            <button class="page-btn" data-filter-value="payee">Payées</button>
-            <button class="page-btn" data-filter-value="attente">En attente</button>
-            <button class="page-btn" data-filter-value="retard">En retard</button>
+            <button class="page-btn" data-filter-value="Payée">Payées</button>
+            <button class="page-btn" data-filter-value="En attente">En attente</button>
+            <button class="page-btn" data-filter-value="Partiellement payée">Partiellement payée</button>
+            <button class="page-btn" data-filter-value="En retard">En retard</button>
           </div>
           <button class="btn btn-secondary btn-sm"><i class="bi bi-download"></i> Exporter</button>
         </div>
@@ -127,7 +166,7 @@ $factures = getAllFactures();
           <tbody>
 
           <?php foreach ($factures as $facture): ?>
-          <tr data-href="facture-detail.php" data-status="attente">
+          <tr data-href="facture-detail.php" data-status="<?= $facture['name_status_facture']; ?>">
             <td class="cell-strong"><?= $facture['numero_facture']; ?></td>
             <td><div class="cell-entity">
                 <span class="avatar avatar--sm"><i class="bi bi-person-fill"></i></span> <?= $facture['firstname_customer'] . ' ' . $facture['lastname_customer']; ?></div>
