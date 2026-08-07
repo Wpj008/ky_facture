@@ -36,6 +36,16 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['create_customer'])){
        header("Location: /facturation/"); 
     }
 
+} elseif($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_customer'])) {
+
+
+$id_customer = $_POST['id_customer'];
+
+deleteCustomer($id_customer);
+
+header("Location: ../pages/customer.php");
+
+
 }
 else{
     header("Location: /facturation/");
